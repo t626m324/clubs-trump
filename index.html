@@ -54,12 +54,37 @@
             background: #b91c1c;
         }
 
-        .setup-section, .game-section {
+        .game-section {
+            display: grid;
+            grid-template-columns: 1fr 1.5fr;
+            gap: 20px;
+            align-items: start;
+        }
+
+        .game-section.hidden {
+            display: none;
+        }
+
+        .left-column {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .right-column {
+            /* Scorecard column */
+        }
+
+        .setup-section {
             background: rgba(255, 255, 255, 0.1);
             border-radius: 10px;
             padding: 20px;
             backdrop-filter: blur(10px);
             margin-bottom: 15px;
+        }
+
+        .setup-section.hidden {
+            display: none;
         }
 
         .setup-section h2, .game-section h2 {
@@ -230,6 +255,17 @@
             padding: 0;
             background: transparent;
             border-radius: 0;
+            flex: 1;
+        }
+
+        .input-sections-container {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .input-sections-container > div {
+            width: 100%;
         }
 
         .bidding-section h3, .tricks-section h3 {
@@ -296,6 +332,12 @@
             border: 2px solid #ffd60a;
         }
 
+        .bid-inputs .player-input input:focus, .trick-inputs .player-input input:focus {
+            outline: none;
+            border-color: #22c55e;
+            background: rgba(255, 255, 255, 0.2);
+        }
+
         .bidding-section button, .tricks-section button {
             width: 100%;
             margin-top: 10px;
@@ -346,12 +388,7 @@
         }
 
         .round-info {
-            text-align: center;
-            font-size: 1.5em;
-            margin: 20px 0;
-            padding: 15px;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 10px;
+            display: none;
         }
 
         .standings {
@@ -478,11 +515,9 @@
             padding: 12px;
             border-radius: 8px;
             margin-top: 15px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
             gap: 20px;
-            flex-wrap: wrap;
             font-size: 0.9em;
         }
 
@@ -490,6 +525,7 @@
             display: flex;
             align-items: center;
             gap: 8px;
+            justify-content: center;
         }
 
         .legend-box {
@@ -504,6 +540,21 @@
 
         .legend-box.missed {
             background: #dc2626;
+        }
+
+        /* Responsive: Stack columns on smaller screens */
+        @media (max-width: 1024px) {
+            .game-section {
+                grid-template-columns: 1fr;
+            }
+            
+            .left-column {
+                order: 2;
+            }
+            
+            .right-column {
+                order: 1;
+            }
         }
 
         /* Input row styling */
@@ -594,37 +645,62 @@
 
         <!-- Game Section -->
         <div class="game-section hidden" id="gameSection">
-            <div class="round-info" id="roundInfo"></div>
-            
-            <div class="status-message hidden" id="statusMessage"></div>
+            <!-- Left Column: Entry Form + Poem -->
+            <div class="left-column">
+                <div class="round-info" id="roundInfo"></div>
+                
+                <div class="status-message hidden" id="statusMessage"></div>
 
-            <!-- Bidding -->
-            <div class="bidding-section hidden" id="biddingSection">
-                <div class="bid-inputs" id="bidInputs"></div>
-                <button id="submitBidsBtn">Lock In Bids</button>
+                <!-- Round Entry Header -->
+                <div style="background: rgba(255,255,255,0.05); padding: 15px; border-radius: 10px; text-align: center; font-weight: 700; font-size: 1.1em;" id="roundEntryHeader">
+                    Round [X] Entry
+                </div>
+
+                <!-- Input sections container -->
+                <div class="input-sections-container">
+                    <!-- Bidding -->
+                    <div class="bidding-section hidden" id="biddingSection">
+                        <div class="bid-inputs" id="bidInputs"></div>
+                        <button id="submitBidsBtn">Lock In Bids</button>
+                    </div>
+
+                    <!-- Tricks -->
+                    <div class="tricks-section hidden" id="tricksSection">
+                        <div class="trick-inputs" id="trickInputs"></div>
+                        <button id="submitTricksBtn">Submit Tricks</button>
+                    </div>
+                </div>
+
+                <!-- Edit Previous Rounds Button -->
+                <div style="text-align: center; padding: 15px 0;" id="editPreviousRoundsContainer" class="hidden">
+                    <button onclick="showEditRoundsDialog()" style="background: #3b82f6; padding: 10px 20px;">
+                        ✏️ Edit Previous Rounds
+                    </button>
+                </div>
+
+                <!-- Poem Section -->
+                <div class="poem-section hidden" id="poemSection" style="margin: 0; padding: 20px; background: rgba(255, 255, 255, 0.05); border-radius: 10px; border: 2px solid #ffd60a;">
+                    <h3 style="margin-bottom: 12px; color: #ffd60a; font-size: 1.1em;">🎭 Post-Round Commentary</h3>
+                    <div id="poemContent" style="font-size: 0.95em; line-height: 1.5; white-space: pre-wrap; font-family: 'Courier New', monospace;"></div>
+                    <div id="poemLoading" class="hidden" style="text-align: center; padding: 15px;">
+                        <div style="display: inline-block; animation: spin 1s linear infinite;">⏳</div>
+                        <div style="font-size: 0.9em;">Generating spicy commentary...</div>
+                    </div>
+                </div>
             </div>
 
-            <!-- Tricks -->
-            <div class="tricks-section hidden" id="tricksSection">
-                <div class="trick-inputs" id="trickInputs"></div>
-                <button id="submitTricksBtn">Submit Tricks</button>
-            </div>
+            <!-- Right Column: Scoreboard -->
+            <div class="right-column">
+                <div style="background: rgba(255,255,255,0.05); padding: 15px; border-radius: 10px; text-align: center; font-weight: 700; font-size: 1.1em; margin-bottom: 15px;">
+                    Scoreboard
+                </div>
 
-            <!-- Standings -->
-            <div class="standings" id="standings"></div>
+                <!-- Standings -->
+                <div class="standings hidden" id="standings"></div>
 
-            <!-- Scoreboard -->
-            <div class="scoreboard">
-                <table id="scoreTable"></table>
-            </div>
-
-            <!-- Poem Section - MOVED TO BOTTOM -->
-            <div class="poem-section hidden" id="poemSection" style="margin: 20px 0 0 0; padding: 20px; background: rgba(255, 255, 255, 0.05); border-radius: 10px; border: 2px solid #ffd60a;">
-                <h3 style="margin-bottom: 12px; color: #ffd60a; font-size: 1.1em;">🎭 Post-Round Commentary</h3>
-                <div id="poemContent" style="font-size: 1em; line-height: 1.5; white-space: pre-wrap; font-family: 'Courier New', monospace;"></div>
-                <div id="poemLoading" class="hidden" style="text-align: center; padding: 15px;">
-                    <div style="display: inline-block; animation: spin 1s linear infinite;">⏳</div>
-                    <div style="font-size: 0.9em;">Generating spicy commentary...</div>
+                <!-- Scoreboard -->
+                <div class="scoreboard">
+                    <table id="scoreTable"></table>
                 </div>
             </div>
         </div>
@@ -740,6 +816,9 @@
             document.getElementById('gameSection').classList.remove('hidden');
             document.getElementById('newGameBtn').classList.remove('hidden');
             
+            // Show empty scoreboard immediately
+            updateScoreTable();
+            
             startNewRound();
             saveState();
         }
@@ -769,8 +848,9 @@
             const roundData = gameState.roundSequence[gameState.currentRound];
             const direction = roundData.direction === 'down' ? '↓' : '↑';
             
-            document.getElementById('roundInfo').innerHTML = `
-                Round ${roundNum} of ${totalRounds}: ${roundData.cards} cards ${direction}
+            // Update the round entry header
+            document.getElementById('roundEntryHeader').innerHTML = `
+                Round [${roundData.cards}${direction}] Entry
             `;
         }
 
@@ -783,11 +863,20 @@
                     ${gameState.players.map((player, idx) => `
                         <div class="player-input">
                             <label>${player}</label>
-                            <input type="number" id="bid-${idx}" min="0" max="${numCards}" value="0">
+                            <input type="number" 
+                                   id="bid-${idx}" 
+                                   min="0" 
+                                   max="${numCards}" 
+                                   value="0"
+                                   tabindex="${idx + 1}"
+                                   onfocus="this.select()">
                         </div>
                     `).join('')}
                 </div>
             `;
+            
+            // Auto-focus first input
+            setTimeout(() => document.getElementById('bid-0')?.focus(), 100);
         }
 
         // Create trick inputs
@@ -799,12 +888,21 @@
                     ${gameState.players.map((player, idx) => `
                         <div class="player-input">
                             <label>${player}</label>
-                            <input type="number" id="trick-${idx}" min="0" max="${numCards}" value="0" 
+                            <input type="number" 
+                                   id="trick-${idx}" 
+                                   min="0" 
+                                   max="${numCards}" 
+                                   value="0" 
+                                   tabindex="${idx + 1}"
+                                   onfocus="this.select()"
                                    title="Bid: ${gameState.currentBids[player]}">
                         </div>
                     `).join('')}
                 </div>
             `;
+            
+            // Auto-focus first input
+            setTimeout(() => document.getElementById('trick-0')?.focus(), 100);
         }
 
         // Submit bids
@@ -1014,6 +1112,14 @@ Make it rhyme, make it hype them up. Just 4 lines, nothing more.`;
         function updateDisplay() {
             updateStandings();
             updateScoreTable();
+            
+            // Show Edit Previous Rounds button if there are completed rounds
+            const editButton = document.getElementById('editPreviousRoundsContainer');
+            if (gameState.rounds.length > 0) {
+                editButton.classList.remove('hidden');
+            } else {
+                editButton.classList.add('hidden');
+            }
         }
 
         // Update standings
@@ -1052,8 +1158,55 @@ Make it rhyme, make it hype them up. Just 4 lines, nothing more.`;
 
         // Update score table
         function updateScoreTable() {
+            // Show empty table with just headers and future rounds if no rounds yet
             if (gameState.rounds.length === 0) {
-                document.getElementById('scoreTable').innerHTML = '';
+                let html = `
+                    <table>
+                        <tr>
+                            <th>Round</th>
+                            ${gameState.players.map(p => `<th>${p}</th>`).join('')}
+                        </tr>
+                `;
+                
+                // Show all future rounds as placeholders in chronological order
+                gameState.roundSequence.forEach(roundInfo => {
+                    const arrow = roundInfo.direction === 'up' ? '↑' : '';
+                    html += '<tr class="future-round">';
+                    html += `<td>${roundInfo.cards}${arrow}</td>`;
+                    gameState.players.forEach(() => {
+                        html += `<td>—</td>`;
+                    });
+                    html += '</tr>';
+                });
+                
+                // Add TOTAL row
+                html += '<tr class="total-row">';
+                html += '<td><strong>TOTAL</strong></td>';
+                gameState.players.forEach(() => {
+                    html += `<td><strong>0</strong></td>`;
+                });
+                html += '</tr>';
+                
+                html += `</table>`;
+                
+                // Add legend
+                html += `
+                    <div class="legend">
+                        <div class="legend-item">
+                            <div class="legend-box made"></div>
+                            <span>Made bid</span>
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-box missed"></div>
+                            <span>Missed bid</span>
+                        </div>
+                        <div class="legend-item">
+                            <span>Format: <strong>SCORE tricks/bid</strong></span>
+                        </div>
+                    </div>
+                `;
+                
+                document.getElementById('scoreTable').innerHTML = html;
                 return;
             }
 
@@ -1105,12 +1258,10 @@ Make it rhyme, make it hype them up. Just 4 lines, nothing more.`;
                     </tr>
             `;
 
-            // Reverse the rounds array to show most recent first
-            const reversedRounds = [...gameState.rounds].reverse();
-            
-            reversedRounds.forEach((round, idx) => {
-                const actualRoundIndex = gameState.rounds.length - 1 - idx;
-                const roundInfo = gameState.roundSequence[actualRoundIndex];
+            // Show completed rounds in CHRONOLOGICAL order (oldest first, newest last)
+            gameState.rounds.forEach((round) => {
+                // Get the round info from the round object itself
+                const roundInfo = gameState.roundSequence[round.round - 1];
                 const arrow = roundInfo.direction === 'up' ? '↑' : '';
                 
                 html += '<tr>';
@@ -1120,20 +1271,20 @@ Make it rhyme, make it hype them up. Just 4 lines, nothing more.`;
                     const score = round.scores[player];
                     const cellClass = score.madeBid ? 'made-bid' : 'missed-bid';
                     
-                    html += `<td class="${cellClass}">
-                        <div><strong>${score.total}</strong></div>
-                        <div style="font-size: 0.85em;">
+                    html += `<td class="${cellClass}" style="text-align: left; padding: 8px 10px;">
+                        <strong style="font-size: 1.1em;">${score.total}</strong>
+                        <span style="float: right; font-size: 0.85em; font-weight: normal;">
                             ${score.tricks}/${score.bid}
-                        </div>
+                        </span>
                     </td>`;
                 });
                 
                 html += '</tr>';
             });
 
-            // Add future rounds (placeholder rows)
+            // Add future rounds (placeholder rows) - in chronological order
             const remainingRounds = gameState.roundSequence.slice(gameState.rounds.length);
-            remainingRounds.reverse().forEach(roundInfo => {
+            remainingRounds.forEach(roundInfo => {
                 const arrow = roundInfo.direction === 'up' ? '↑' : '';
                 html += '<tr class="future-round">';
                 html += `<td>${roundInfo.cards}${arrow}</td>`;
@@ -1172,6 +1323,83 @@ Make it rhyme, make it hype them up. Just 4 lines, nothing more.`;
             `;
 
             document.getElementById('scoreTable').innerHTML = html;
+        }
+
+        // Show edit rounds dialog
+        function showEditRoundsDialog() {
+            if (gameState.rounds.length === 0) {
+                alert('No rounds to edit yet!');
+                return;
+            }
+            
+            const roundsList = gameState.rounds.map((round, idx) => {
+                const roundInfo = gameState.roundSequence[idx];
+                const arrow = roundInfo.direction === 'up' ? '↑' : '';
+                return `${round.cards}${arrow} cards (Round ${idx + 1})`;
+            }).join('\n');
+            
+            const selection = prompt(`Select a round to edit:\n\n${roundsList}\n\nEnter the card count (e.g., 7, 6, 5, etc.):`);
+            
+            if (!selection) return;
+            
+            // Find the round by card count
+            const cardCount = parseInt(selection.replace(/[↑↓]/g, '').trim());
+            const roundIndex = gameState.rounds.findIndex(r => r.cards === cardCount);
+            
+            if (roundIndex === -1) {
+                alert('Round not found! Make sure you enter the card count shown (e.g., 7, 6, 5).');
+                return;
+            }
+            
+            const round = gameState.rounds[roundIndex];
+            const roundData = gameState.roundSequence[roundIndex];
+            
+            // Ask if they want to edit bids or tricks
+            const editType = confirm('Click OK to edit BIDS, or Cancel to edit TRICKS');
+            
+            if (editType) {
+                // Edit bids
+                gameState.players.forEach((player, idx) => {
+                    const currentBid = round.scores[player].bid;
+                    const newBid = prompt(`${player}'s bid (currently ${currentBid}, max ${roundData.cards}):`, currentBid);
+                    if (newBid !== null) {
+                        round.scores[player].bid = parseInt(newBid);
+                    }
+                });
+            } else {
+                // Edit tricks
+                gameState.players.forEach((player, idx) => {
+                    const currentTricks = round.scores[player].tricks;
+                    const newTricks = prompt(`${player}'s tricks (currently ${currentTricks}, max ${roundData.cards}):`, currentTricks);
+                    if (newTricks !== null) {
+                        round.scores[player].tricks = parseInt(newTricks);
+                    }
+                });
+            }
+            
+            // Recalculate scores for this round and all subsequent rounds
+            recalculateScoresFromRound(roundIndex);
+            saveState();
+            updateDisplay();
+            alert('Round updated!');
+        }
+        
+        // Recalculate scores from a given round onward
+        function recalculateScoresFromRound(startIndex) {
+            gameState.players.forEach(player => {
+                let runningTotal = startIndex > 0 ? gameState.rounds[startIndex - 1].scores[player].total : 0;
+                
+                for (let i = startIndex; i < gameState.rounds.length; i++) {
+                    const round = gameState.rounds[i];
+                    const score = round.scores[player];
+                    const madeBid = score.tricks === score.bid;
+                    const points = (score.tricks * gameState.settings.pointsPerTrick) + (madeBid ? gameState.settings.makeBonus : 0);
+                    
+                    score.madeBid = madeBid;
+                    runningTotal += points;
+                    score.total = runningTotal;
+                }
+            });
         }
 
         // Reset game
