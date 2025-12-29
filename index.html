@@ -13,9 +13,9 @@
 
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #1e5128 0%, #2d6a4f 100%);
+            background: #0a1929;
             color: #fff;
-            padding: 20px;
+            padding: 10px;
             min-height: 100vh;
         }
 
@@ -26,39 +26,62 @@
 
         h1 {
             text-align: center;
-            margin-bottom: 30px;
-            font-size: 2.5em;
+            margin-bottom: 15px;
+            font-size: 1.8em;
             text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        h1 .title-text {
+            flex: 1;
+            text-align: center;
+        }
+
+        h1 .new-game-btn {
+            background: #dc2626;
+            color: white;
+            padding: 8px 16px;
+            font-size: 0.5em;
+            border-radius: 6px;
+            cursor: pointer;
+            border: none;
+            font-weight: 600;
+        }
+
+        h1 .new-game-btn:hover {
+            background: #b91c1c;
         }
 
         .setup-section, .game-section {
             background: rgba(255, 255, 255, 0.1);
-            border-radius: 15px;
-            padding: 30px;
+            border-radius: 10px;
+            padding: 20px;
             backdrop-filter: blur(10px);
-            margin-bottom: 20px;
+            margin-bottom: 15px;
         }
 
         .setup-section h2, .game-section h2 {
-            margin-bottom: 20px;
-            font-size: 1.8em;
+            margin-bottom: 12px;
+            font-size: 1.3em;
         }
 
         .form-group {
-            margin-bottom: 20px;
+            margin-bottom: 12px;
         }
 
         label {
             display: block;
-            margin-bottom: 8px;
+            margin-bottom: 5px;
             font-weight: 600;
-            font-size: 1.1em;
+            font-size: 0.95em;
         }
 
         input, select, button {
-            font-size: 1em;
-            padding: 10px;
-            border-radius: 8px;
+            font-size: 0.95em;
+            padding: 8px;
+            border-radius: 6px;
             border: none;
         }
 
@@ -138,28 +161,36 @@
         table {
             width: 100%;
             border-collapse: collapse;
-            background: rgba(255, 255, 255, 0.95);
-            color: #333;
+            background: #1a2332;
+            color: #fff;
             border-radius: 10px;
             overflow: hidden;
+            font-size: 0.95em;
         }
 
         th, td {
-            padding: 12px;
+            padding: 10px 6px;
             text-align: center;
-            border: 1px solid #ddd;
+            border: 1px solid #2d3748;
+        }
+
+        th:first-child, td:first-child {
+            width: 70px;
+            min-width: 70px;
+            max-width: 70px;
         }
 
         th {
-            background: #2d6a4f;
+            background: #0f1419;
             color: white;
             font-weight: 700;
             position: sticky;
             top: 0;
+            font-size: 0.85em;
         }
 
         tr:nth-child(even) {
-            background: rgba(0, 0, 0, 0.02);
+            background: rgba(0, 0, 0, 0.1);
         }
 
         .made-bid {
@@ -174,19 +205,107 @@
             font-weight: 700;
         }
 
-        .leader-row {
-            background: #fef3c7 !important;
+        .total-row {
+            background: #0f1419 !important;
+            border-top: 3px solid #ffd60a;
+            font-weight: 700;
+            font-size: 1.1em;
         }
 
-        .last-place-row {
-            background: #fee2e2 !important;
+        .total-row td {
+            color: #ffd60a;
+        }
+
+        .future-round {
+            background: #132030 !important;
+            opacity: 0.5;
+        }
+
+        .future-round td {
+            color: #666;
         }
 
         .bidding-section, .tricks-section {
-            margin: 20px 0;
-            padding: 20px;
-            background: rgba(255, 255, 255, 0.05);
+            margin: 0 0 15px 0;
+            padding: 0;
+            background: transparent;
+            border-radius: 0;
+        }
+
+        .bidding-section h3, .tricks-section h3 {
+            display: none;
+        }
+
+        .bid-inputs, .trick-inputs {
+            display: flex;
+            align-items: stretch;
+            gap: 0;
+            background: #1a2332;
             border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .bid-inputs .input-label, .trick-inputs .input-label {
+            background: #0f1419;
+            color: #ffd60a;
+            font-weight: 700;
+            font-size: 1em;
+            padding: 15px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 120px;
+            border-right: 1px solid #2d3748;
+        }
+
+        .bid-inputs .inputs-grid, .trick-inputs .inputs-grid {
+            flex: 1;
+            display: grid;
+            grid-auto-flow: column;
+            grid-auto-columns: 1fr;
+        }
+
+        .bid-inputs .player-input, .trick-inputs .player-input {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 10px;
+            border-right: 1px solid #2d3748;
+        }
+
+        .bid-inputs .player-input:last-child, .trick-inputs .player-input:last-child {
+            border-right: none;
+        }
+
+        .bid-inputs .player-input label, .trick-inputs .player-input label {
+            font-size: 0.85em;
+            margin-bottom: 5px;
+            color: #fff;
+            font-weight: 600;
+        }
+
+        .bid-inputs .player-input input, .trick-inputs .player-input input {
+            width: 60px;
+            text-align: center;
+            font-size: 1.3em;
+            font-weight: 700;
+            padding: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            color: #fff;
+            border: 2px solid #ffd60a;
+        }
+
+        .bidding-section button, .tricks-section button {
+            width: 100%;
+            margin-top: 10px;
+            padding: 12px;
+            font-size: 1em;
+            background: #22c55e;
+        }
+
+        .bidding-section button:hover, .tricks-section button:hover {
+            background: #16a34a;
         }
 
         .bid-inputs, .trick-inputs {
@@ -236,20 +355,31 @@
         }
 
         .standings {
-            margin: 20px 0;
-            padding: 20px;
+            margin: 15px 0;
+            padding: 15px;
             background: rgba(255, 255, 255, 0.05);
             border-radius: 10px;
         }
 
-        .standing-item {
-            padding: 10px;
-            margin: 8px 0;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 8px;
+        .standings h3 {
+            margin-bottom: 10px;
+            font-size: 1.1em;
+        }
+
+        .standings-list {
             display: flex;
-            justify-content: space-between;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .standing-item {
+            padding: 8px 12px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 6px;
+            display: inline-flex;
             align-items: center;
+            gap: 6px;
+            font-size: 0.9em;
         }
 
         .standing-item.leader {
@@ -259,8 +389,8 @@
         }
 
         .standing-item.last {
-            background: #fee2e2;
-            color: #000;
+            background: #7f1d1d;
+            color: #fff;
         }
 
         .button-group {
@@ -281,11 +411,146 @@
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
         }
+
+        /* Winner Banner */
+        .winner-banner {
+            background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
+            color: #000;
+            padding: 30px;
+            border-radius: 15px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .winner-banner h2 {
+            font-size: 1.5em;
+            margin-bottom: 10px;
+        }
+
+        .winner-banner .score {
+            font-size: 2.5em;
+            font-weight: 700;
+            margin: 10px 0;
+        }
+
+        .final-standings {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 20px;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .final-standing {
+            background: rgba(0, 0, 0, 0.2);
+            padding: 10px 15px;
+            border-radius: 8px;
+            min-width: 100px;
+        }
+
+        .final-standing.first {
+            background: #fef3c7;
+        }
+
+        .final-standing.last {
+            background: #7f1d1d;
+            color: #fff;
+        }
+
+        .final-standing .rank {
+            font-size: 0.85em;
+            opacity: 0.9;
+        }
+
+        .final-standing .name {
+            font-size: 1.2em;
+            font-weight: 700;
+            margin: 3px 0;
+        }
+
+        .final-standing .points {
+            font-size: 1em;
+        }
+
+        /* Legend */
+        .legend {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 12px;
+            border-radius: 8px;
+            margin-top: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+            font-size: 0.9em;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .legend-box {
+            width: 18px;
+            height: 18px;
+            border-radius: 3px;
+        }
+
+        .legend-box.made {
+            background: #22c55e;
+        }
+
+        .legend-box.missed {
+            background: #dc2626;
+        }
+
+        /* Input row styling */
+        .input-row {
+            background: #1e3a5f !important;
+        }
+
+        .input-row td {
+            padding: 8px 4px !important;
+        }
+
+        .input-row input {
+            width: 60px;
+            text-align: center;
+            font-size: 1.1em;
+            font-weight: 700;
+            padding: 6px;
+            background: rgba(255, 255, 255, 0.1);
+            color: #fff;
+            border: 2px solid #ffd60a;
+        }
+
+        .input-row .label {
+            color: #ffd60a;
+            font-weight: 700;
+            text-transform: uppercase;
+            font-size: 0.85em;
+        }
+
+        .input-row button {
+            padding: 6px 16px;
+            font-size: 0.9em;
+            background: #22c55e;
+        }
+
+        .input-row button:hover {
+            background: #16a34a;
+        }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>♣️ Clubs Trump Scorekeeper ♣️</h1>
+        <h1>
+            <span></span>
+            <span class="title-text">♣️ Clubs Trump ♣️</span>
+            <button class="new-game-btn hidden" id="newGameBtn" onclick="resetGame()">New Game</button>
+        </h1>
 
         <!-- Setup Section -->
         <div class="setup-section" id="setupSection">
@@ -329,44 +594,38 @@
 
         <!-- Game Section -->
         <div class="game-section hidden" id="gameSection">
-            <div class="button-group">
-                <button id="resetGameBtn" class="reset-button">New Game</button>
-            </div>
-
             <div class="round-info" id="roundInfo"></div>
             
             <div class="status-message hidden" id="statusMessage"></div>
 
             <!-- Bidding -->
-            <div class="bidding-section" id="biddingSection">
-                <h3>Place Bids</h3>
+            <div class="bidding-section hidden" id="biddingSection">
                 <div class="bid-inputs" id="bidInputs"></div>
-                <button id="submitBidsBtn" style="margin-top: 15px;">Lock In Bids</button>
+                <button id="submitBidsBtn">Lock In Bids</button>
             </div>
 
             <!-- Tricks -->
             <div class="tricks-section hidden" id="tricksSection">
-                <h3>Enter Tricks Won</h3>
                 <div class="trick-inputs" id="trickInputs"></div>
-                <button id="submitTricksBtn" style="margin-top: 15px;">Submit Tricks</button>
+                <button id="submitTricksBtn">Submit Tricks</button>
             </div>
 
             <!-- Standings -->
             <div class="standings" id="standings"></div>
 
-            <!-- Poem Section -->
-            <div class="poem-section hidden" id="poemSection" style="margin: 20px 0; padding: 25px; background: rgba(255, 255, 255, 0.1); border-radius: 10px; border: 2px solid #ffd60a;">
-                <h3 style="margin-bottom: 15px; color: #ffd60a;">🎭 Post-Round Commentary</h3>
-                <div id="poemContent" style="font-size: 1.2em; line-height: 1.6; white-space: pre-wrap; font-family: 'Courier New', monospace;"></div>
-                <div id="poemLoading" class="hidden" style="text-align: center; padding: 20px;">
-                    <div style="display: inline-block; animation: spin 1s linear infinite;">⏳</div>
-                    <div>Generating spicy commentary...</div>
-                </div>
-            </div>
-
             <!-- Scoreboard -->
             <div class="scoreboard">
                 <table id="scoreTable"></table>
+            </div>
+
+            <!-- Poem Section - MOVED TO BOTTOM -->
+            <div class="poem-section hidden" id="poemSection" style="margin: 20px 0 0 0; padding: 20px; background: rgba(255, 255, 255, 0.05); border-radius: 10px; border: 2px solid #ffd60a;">
+                <h3 style="margin-bottom: 12px; color: #ffd60a; font-size: 1.1em;">🎭 Post-Round Commentary</h3>
+                <div id="poemContent" style="font-size: 1em; line-height: 1.5; white-space: pre-wrap; font-family: 'Courier New', monospace;"></div>
+                <div id="poemLoading" class="hidden" style="text-align: center; padding: 15px;">
+                    <div style="display: inline-block; animation: spin 1s linear infinite;">⏳</div>
+                    <div style="font-size: 0.9em;">Generating spicy commentary...</div>
+                </div>
             </div>
         </div>
     </div>
@@ -397,6 +656,7 @@
                 if (gameState.rounds && gameState.rounds.length > 0) {
                     document.getElementById('setupSection').classList.add('hidden');
                     document.getElementById('gameSection').classList.remove('hidden');
+                    document.getElementById('newGameBtn').classList.remove('hidden');
                     updateDisplay();
                 }
             }
@@ -478,6 +738,7 @@
 
             document.getElementById('setupSection').classList.add('hidden');
             document.getElementById('gameSection').classList.remove('hidden');
+            document.getElementById('newGameBtn').classList.remove('hidden');
             
             startNewRound();
             saveState();
@@ -516,23 +777,34 @@
         // Create bid inputs
         function createBidInputs(numCards) {
             const container = document.getElementById('bidInputs');
-            container.innerHTML = gameState.players.map((player, idx) => `
-                <div class="player-input">
-                    <label>${player}:</label>
-                    <input type="number" id="bid-${idx}" min="0" max="${numCards}" value="0">
+            container.innerHTML = `
+                <div class="input-label">BIDS</div>
+                <div class="inputs-grid">
+                    ${gameState.players.map((player, idx) => `
+                        <div class="player-input">
+                            <label>${player}</label>
+                            <input type="number" id="bid-${idx}" min="0" max="${numCards}" value="0">
+                        </div>
+                    `).join('')}
                 </div>
-            `).join('');
+            `;
         }
 
         // Create trick inputs
         function createTrickInputs(numCards) {
             const container = document.getElementById('trickInputs');
-            container.innerHTML = gameState.players.map((player, idx) => `
-                <div class="player-input">
-                    <label>${player} (bid: ${gameState.currentBids[player]}):</label>
-                    <input type="number" id="trick-${idx}" min="0" max="${numCards}" value="0">
+            container.innerHTML = `
+                <div class="input-label">TRICKS</div>
+                <div class="inputs-grid">
+                    ${gameState.players.map((player, idx) => `
+                        <div class="player-input">
+                            <label>${player}</label>
+                            <input type="number" id="trick-${idx}" min="0" max="${numCards}" value="0" 
+                                   title="Bid: ${gameState.currentBids[player]}">
+                        </div>
+                    `).join('')}
                 </div>
-            `).join('');
+            `;
         }
 
         // Submit bids
@@ -791,19 +1063,58 @@ Make it rhyme, make it hype them up. Just 4 lines, nothing more.`;
                 total: lastRound.scores[player].total
             })).sort((a, b) => b.total - a.total);
 
-            const maxScore = standings[0].total;
-            const minScore = standings[standings.length - 1].total;
+            const winner = standings[0];
+            const isGameComplete = gameState.currentRound >= gameState.roundSequence.length;
 
+            // Show winner banner if game is complete
+            let bannerHTML = '';
+            if (isGameComplete) {
+                bannerHTML = `
+                    <div class="winner-banner">
+                        <h2>♣️ CLUBS TRUMP ♣️</h2>
+                        <div style="font-size: 1.5em;">🎉 GAME COMPLETE! 🎉</div>
+                        <div style="margin: 20px 0;">
+                            <div style="font-size: 1.2em;">🏆 WINNER: ${winner.name}! 🏆</div>
+                            <div class="score">${winner.total} POINTS</div>
+                        </div>
+                        <div class="final-standings">
+                            ${standings.map((player, idx) => {
+                                const deficit = winner.total - player.total;
+                                const isFirst = idx === 0;
+                                const isLast = idx === standings.length - 1 && standings.length > 1;
+                                return `
+                                    <div class="final-standing ${isFirst ? 'first' : ''} ${isLast ? 'last' : ''}">
+                                        <div class="rank">${idx + 1}. ${player.name}</div>
+                                        <div class="name">${player.total}</div>
+                                        <div class="points">${deficit > 0 ? `-${deficit}` : ''}</div>
+                                    </div>
+                                `;
+                            }).join('')}
+                        </div>
+                    </div>
+                `;
+            }
+
+            // Build table HTML
             let html = `
-                <tr>
-                    <th>Round</th>
-                    ${gameState.players.map(p => `<th>${p}</th>`).join('')}
-                </tr>
+                ${bannerHTML}
+                <table>
+                    <tr>
+                        <th>Round</th>
+                        ${gameState.players.map(p => `<th>${p}</th>`).join('')}
+                    </tr>
             `;
 
-            gameState.rounds.forEach(round => {
+            // Reverse the rounds array to show most recent first
+            const reversedRounds = [...gameState.rounds].reverse();
+            
+            reversedRounds.forEach((round, idx) => {
+                const actualRoundIndex = gameState.rounds.length - 1 - idx;
+                const roundInfo = gameState.roundSequence[actualRoundIndex];
+                const arrow = roundInfo.direction === 'up' ? '↑' : '';
+                
                 html += '<tr>';
-                html += `<td><strong>${round.round} (${round.cards})</strong></td>`;
+                html += `<td><strong>${round.cards}${arrow}</strong></td>`;
                 
                 gameState.players.forEach(player => {
                     const score = round.scores[player];
@@ -811,7 +1122,7 @@ Make it rhyme, make it hype them up. Just 4 lines, nothing more.`;
                     
                     html += `<td class="${cellClass}">
                         <div><strong>${score.total}</strong></div>
-                        <div style="font-size: 0.9em;">
+                        <div style="font-size: 0.85em;">
                             ${score.tricks}/${score.bid}
                         </div>
                     </td>`;
@@ -819,6 +1130,46 @@ Make it rhyme, make it hype them up. Just 4 lines, nothing more.`;
                 
                 html += '</tr>';
             });
+
+            // Add future rounds (placeholder rows)
+            const remainingRounds = gameState.roundSequence.slice(gameState.rounds.length);
+            remainingRounds.reverse().forEach(roundInfo => {
+                const arrow = roundInfo.direction === 'up' ? '↑' : '';
+                html += '<tr class="future-round">';
+                html += `<td>${roundInfo.cards}${arrow}</td>`;
+                gameState.players.forEach(() => {
+                    html += `<td>—</td>`;
+                });
+                html += '</tr>';
+            });
+
+            // Add TOTAL row
+            html += '<tr class="total-row">';
+            html += '<td><strong>TOTAL</strong></td>';
+            gameState.players.forEach(player => {
+                const total = lastRound.scores[player].total;
+                html += `<td><strong>${total}</strong></td>`;
+            });
+            html += '</tr>';
+
+            html += `</table>`;
+
+            // Add legend
+            html += `
+                <div class="legend">
+                    <div class="legend-item">
+                        <div class="legend-box made"></div>
+                        <span>Made bid</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-box missed"></div>
+                        <span>Missed bid</span>
+                    </div>
+                    <div class="legend-item">
+                        <span>Format: <strong>SCORE tricks/bid</strong></span>
+                    </div>
+                </div>
+            `;
 
             document.getElementById('scoreTable').innerHTML = html;
         }
